@@ -34,6 +34,7 @@ import Icons from "views/Icons/Icons.js";
 import Maps from "views/Maps/Maps.js";
 import NotificationsPage from "views/Notifications/Notifications.js";
 import UpgradeToPro from "views/UpgradeToPro/UpgradeToPro.js";
+import Mail from "views/Mail/Mail";
 // core components/views for RTL layout
 // import RTLPage from "views/RTLPage/RTLPage.js";
 
@@ -91,7 +92,7 @@ const dashboardRoutes = [
     path: "/tool-spam-email",
     name: "Tool Spam Email",
     icon: MailOutline,
-    component: NotificationsPage,
+    component: Mail,
     layout: "/admin",
   },
   // {
