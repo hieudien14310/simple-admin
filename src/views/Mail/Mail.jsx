@@ -1,10 +1,13 @@
+import MailApi from "../../api/Mail";
 import React from "react";
 import { useForm } from "react-hook-form";
+require("dotenv").config();
 //================================================================================================
 
 export default function Mail() {
   const { handleSubmit, register } = useForm();
-  const sendMail = (data) => {
+  const sendMail = async (body) => {
+    const data = await MailApi.sendMail(body);
     console.log(data);
   };
   return (
