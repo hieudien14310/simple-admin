@@ -8,7 +8,7 @@ require("dotenv").config();
 export default function Mail() {
   const [editable, setEditable] = useState(true);
   const [notifySuccess, setNotifySuccess] = useState(false);
-  const [notifyError, setNotifyError] = useState(true);
+  const [notifyError, setNotifyError] = useState(false);
   const [fieldsByTypeEmail, setFieldsByTypeEmail] = useState(1);
   const { handleSubmit, register, reset } = useForm();
   const sendMail = async (body) => {
