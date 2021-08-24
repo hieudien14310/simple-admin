@@ -8,6 +8,7 @@ require("dotenv").config();
 export default function Mail() {
   const [editable, setEditable] = useState(true);
   const [notifySuccess, setNotifySuccess] = useState(false);
+  const [notifyError, setNotifyError] = useState(true);
   const [fieldsByTypeEmail, setFieldsByTypeEmail] = useState(1);
   const { handleSubmit, register, reset } = useForm();
   const sendMail = async (body) => {
@@ -22,7 +23,8 @@ export default function Mail() {
       setNotifySuccess(true);
       // console.log(data);
     } catch (error) {
-      console.log(error);
+      console.error(error);
+      setNotifyError(true);
     } finally {
       setEditable(true);
     }
@@ -30,8 +32,9 @@ export default function Mail() {
   useEffect(() => {
     setTimeout(() => {
       setNotifySuccess(false);
-    }, 5000);
-  }, [notifySuccess]);
+      setNotifyError(false);
+    }, 7000);
+  }, [notifySuccess, notifyError]);
   return (
     <div className="container">
       <div className="bg-white p-3">
@@ -40,6 +43,13 @@ export default function Mail() {
             message={"Đã spam mail xong."}
             // close
             color="success"
+          />
+        )}
+        {notifyError && (
+          <SnackbarContent
+            message={"Có lỗi xảy ra. Vui lòng thử lại."}
+            // close
+            color="danger"
           />
         )}
         <h3 className="pb-2 mt-2 mb-4 border-bottom">Email address change requested</h3>
@@ -71,19 +81,28 @@ export default function Mail() {
                     className="form-control custom-select"
                     {...register("typeEmail")}
                     onChange={(e) => {
-                      if (parseInt(e.target.value) === 3) {
+                      const value = parseInt(e.target.value);
+                      if (value === 3) {
                         setFieldsByTypeEmail(3);
+                      } else if (value === 5) {
+                        setFieldsByTypeEmail(5);
+                      } else if (value === 7) {
+                        setFieldsByTypeEmail(7);
+                      } else if (value === 9) {
+                        setFieldsByTypeEmail(9);
                       } else {
                         setFieldsByTypeEmail(1);
                       }
                       reset({
-                        typeEmail: parseInt(e.target.value),
+                        typeEmail: value,
                       });
                     }}
                   >
                     <option value="1">Spam Email</option>
                     <option value="3">Last Chance</option>
                     <option value="5">Email Christmas</option>
+                    <option value="7">Email LLCPECK</option>
+                    <option value="9">Email SELLERS</option>
                   </select>
                 </div>
               </div>
