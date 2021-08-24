@@ -83,6 +83,7 @@ export default function Mail() {
                   >
                     <option value="1">Spam Email</option>
                     <option value="3">Last Chance</option>
+                    <option value="5">Email Christmas</option>
                   </select>
                 </div>
               </div>
