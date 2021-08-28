@@ -3,9 +3,16 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import SnackbarContent from "components/Snackbar/SnackbarContent.js";
 import MailEstyAccount from "./Mail-Esty-Account";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 require("dotenv").config();
 //================================================================================================
 
+const schema = yup.object().shape({
+  emailSender: yup.string().email("Không đúng định dạng email").required("Bắt buộc nhập."),
+  passwordSender: yup.string().required("Bắt buộc nhập."),
+  emailReceived: yup.string().required("Bắt buộc nhập."),
+});
 export default function Mail() {
   const [editable, setEditable] = useState(true);
   const [notifySuccess, setNotifySuccess] = useState(false);
@@ -14,7 +21,14 @@ export default function Mail() {
   const [name, setName] = useState("");
   const [emailFrom, setEmailFrom] = useState("");
   const [emailTo, setEmailTo] = useState("");
-  const { handleSubmit, register, reset } = useForm();
+  const {
+    handleSubmit,
+    register,
+    reset,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
   const sendMail = async (body) => {
     try {
       setEditable(false);
@@ -66,7 +80,17 @@ export default function Mail() {
                     Email Sender
                   </label>
                   <div className="">
-                    <input {...register("emailSender")} type="email" className="form-control" placeholder="Địa chỉ sender" disabled={!editable} />
+                    <input
+                      {...register("emailSender")}
+                      // style={{
+                      //   borderColor: "red",
+                      // }}
+                      type="email"
+                      className="form-control"
+                      placeholder="Địa chỉ sender"
+                      disabled={!editable}
+                    />
+                    {errors.emailSender?.message && <p style={{ color: "#f55a4e" }}>{errors.emailSender?.message}</p>}
                   </div>
                 </div>
                 <div className="form-group row">
@@ -75,6 +99,16 @@ export default function Mail() {
                   </label>
                   <div className="">
                     <input type="password" className="form-control" id="email" {...register("passwordSender")} placeholder="Mật khẩu sender" disabled={!editable} />
+                    {errors.passwordSender?.message && <p style={{ color: "#f55a4e" }}>{errors.passwordSender?.message}</p>}
+                  </div>
+                </div>
+                <div className="form-group row">
+                  <label htmlFor="email" className="col-lg-4 col-form-label">
+                    Email
+                  </label>
+                  <div className="">
+                    <input type="email" className="form-control" id="email" {...register("emailReceived")} placeholder="Địa chỉ email gửi tới" disabled={!editable} />
+                    {errors.emailReceived?.message && <p style={{ color: "#f55a4e" }}>{errors.emailReceived?.message}</p>}
                   </div>
                 </div>
                 <div className="form-group row">
@@ -131,14 +165,7 @@ export default function Mail() {
                     />
                   </div>
                 </div>
-                <div className="form-group row">
-                  <label htmlFor="email" className="col-lg-4 col-form-label">
-                    Email
-                  </label>
-                  <div className="">
-                    <input type="email" className="form-control" id="email" {...register("emailReceived")} placeholder="Địa chỉ email gửi tới" disabled={!editable} />
-                  </div>
-                </div>
+
                 {fieldsByTypeEmail === 1 && (
                   <>
                     <div className="form-group row">
